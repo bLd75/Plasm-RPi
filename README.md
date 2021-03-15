@@ -173,7 +173,7 @@ Upgrade
 When a new version of Plasm node is released, you just have to download it, replace the binary file and restart the service
 
     wget https://github.com/bLd75/Plasm-RPi/raw/main/plasm-1.9.0-ubuntu-aarch64.tar.gz
-    tar -xf /plasm-1.9.0-ubuntu-aarch64.tar.gz
+    tar -xf plasm-1.9.0-ubuntu-aarch64.tar.gz
     mv ./plasm /home/ubuntu
     sudo systemctl restart plasm.service
 
