@@ -1,6 +1,19 @@
+Dusty v1.9.0 update
+-------------------
+
+The network has changed from Dusty3 to Dusty4 including substrate 3.0, enhanced Ethereum compatibility support, and stable wasm smart contracts.
+
+* Portal apps.plasmnet.io is officially depreciated, Dusty should now be used from https://polkadot.js.org/apps.
+* Session keys scheme has changed.
+* Dusty4 network was launched from scratch, previous blocks from Dusty3 are no longer used, old chain data can be purged.
+* New Dusty public endpoints : Substrate = wss://rpc.dusty.plasmnet.io - EVM = https://rpc.dusty.plasmnet.io:8545
+
+Please see the Upgrade section
+
+
 Introduction
 ------------
-a
+
 This repo intends to deliver the binary of [Plasm Network](https://www.plasmnet.io/) for Raspberry Pi.
 
 It's entirely build from the sources of [Plasm repository](https://github.com/PlasmNetwork/Plasm) on a Raspberry Pi 4 model B with Ubuntu Server 20.04.01 LTS 64 bit.
@@ -61,6 +74,10 @@ Get and extract the binary file
     wget https://github.com/bLd75/Plasm-RPi/raw/main/plasm-1.8.0-ubuntu-aarch64.tar.gz
     tar -xf  plasm-node-ubuntu-1.8.0-aarch64.tar.gz
 
+Move the binary file to a desired folder (we will use /home/ubuntu as reference here)
+
+    mv ./plasm /home/ubuntu
+
 Create a directory for the chain storage
 
     sudo mkdir /media/mydisk/plasm/
@@ -71,7 +88,7 @@ Create a screen session
 
 Run it and enjoy blocks syncing :)
 
-    ./plasm --validator --name <Your Validator Name> --rpc-cors all --in-peers 50 --out-peers 50 --base-path /media/mydisk/plasm/
+    /home/ubuntu/plasm --validator --name <Your Validator Name> --rpc-cors all --in-peers 50 --out-peers 50 --base-path /media/mydisk/plasm/
 
 Before you close or anything else you want to do, make sure to detach the screen session to let it run in background
 
@@ -131,6 +148,8 @@ To tail the real time log, you can use this command (100 is the number of lines 
 Enjoy your fully operational tiniest node :)
 
 
+Alternative method
+------------------
 
 Alternatively to a systemd service, you can just set a cron job to start the Plasm node at reboot.
 
@@ -148,6 +167,27 @@ Check the node status
 
     screen -r plasm
 
+Upgrade
+-------
+
+When a new version of Plasm node is released, you just have to download it, replace the binary file and restart the service
+
+    wget https://github.com/bLd75/Plasm-RPi/raw/main/plasm-1.9.0-ubuntu-aarch64.tar.gz
+    tar -xf /plasm-1.9.0-ubuntu-aarch64.tar.gz
+    mv ./plasm /home/ubuntu
+    sudo systemctl restart plasm.service
+
+In case of changes to the network version (as for Dusty v1.9.0 -> network version Dusty4), database location for chain data can change.
+In this case, you can use the following command to free space. Make sure to purge with the previous version BEFORE you upgrade.
+
+    sudo systemctl restart plasm.service
+    /home/ubuntu/plasm purge-chain --base-path /media/mydisk/plasm/
+
+In case session keys scheme changes (as for Dusty v1.9.0), it may be necessary to get a new session keys.
+
+    curl -H "Content-Type: application/json" -d '{"id":1, "jsonrpc":"2.0", "method": "author_rotateKeys", "params":[]}' http://localhost:9933
+
+Then, don't forget to send the extrinsics to set the new session keys to your account.
 
 Next steps
 ----------
