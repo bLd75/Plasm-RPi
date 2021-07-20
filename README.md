@@ -202,4 +202,4 @@ Then, just follow [Maarten's guide](https://fiex.medium.com/plasm-node-on-azure-
 
 You can also watch at [Kenzo's video](https://youtu.be/wZgIqAufyCE) starting from 6:00
 
-Other ressource : [Plasm Documentation](https://docs.plasmnet.io/workshop-and-tutorial/validator-guide)
+Other ressource : [Plasm Documentation](https://docs.astar.network/build/validator-guide)
